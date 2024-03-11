@@ -14,7 +14,7 @@ TYPE
   frm* = POINTER TO frmDesc;
   frmDesc* = RECORD
     height-, width-: INTEGER;
-    mtrx: matrix; 
+    mtrx*: matrix; 
     END;
 
 PROCEDURE create*(w, h: INTEGER): frm;
@@ -29,8 +29,10 @@ BEGIN
   i:= 0;
   REPEAT
     NEW(f^.mtrx[i], w);
-
+    Out.String("i="); Out.Int(i,0); Out.Ln;
+    INC(i)
   UNTIL i = h - 1;
+  RETURN f;
 END create;
 
 PROCEDURE write*(f: frm; cl: cell; c, r: INTEGER);
