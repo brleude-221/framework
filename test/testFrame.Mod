@@ -1,25 +1,11 @@
 MODULE testFrame;
 IMPORT Out, frame;
 
-TYPE 
-
-  strCell = POINTER TO strCellDesc;
-
-  strCellDesc = RECORD(frame.cellDesc);
-    string : ARRAY 16 OF CHAR
-  END;
-
-  intCell = POINTER TO intCellDesc;
-
-  intCellDesc = RECORD(frame.cellDesc);
-    int : INTEGER
-    END;
-
 PROCEDURE main;
 VAR
   f:frame.frm;
-  icell: intCell;
-  scell: strCell;
+  icell: frame.intCell;
+  scell: frame.strCell;
 BEGIN
   NEW(icell); NEW(scell);
   icell^.int := 2; scell^.string := "valod";
@@ -27,16 +13,19 @@ BEGIN
   frame.write(f, icell, 0, 0);
   frame.write(f, scell, 1, 1);
   f^.mtrx[2]^[2] := f^.mtrx[1]^[1];
-  IF f^.mtrx[2]^[2] IS strCell THEN 
-    Out.String(f^.mtrx[2]^[2](strCell)^.string); Out.Ln;
+  IF f^.mtrx[2]^[2] IS frame.strCell THEN 
+    Out.String(f^.mtrx[2]^[2](frame.strCell)^.string); Out.Ln;
   ELSE
     Out.String("not a strCell"); Out.Ln;
   END;
+
+  frame.nameColumn(f, 0, "chgitem");
+  Out.String(f^.columnNames^[0]); Out.Ln;
 
 END main;
 
 
 BEGIN
-main;
+  main;
 
 END testFrame.

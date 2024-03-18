@@ -7,7 +7,18 @@ TYPE
   cellDesc* = RECORD 
     (* abstract *)
     END;
+
+  strCell* = POINTER TO strCellDesc;
+  strCellDesc* = RECORD(cellDesc)
+    string*: ARRAY 16 OF CHAR
+  END;
+
+  intCell* = POINTER TO intCellDesc;
+  intCellDesc* = RECORD(cellDesc)
+    int*: INTEGER
+  END;
   
+  columnName = ARRAY 32 OF CHAR;
   column = POINTER TO ARRAY OF cell; 
   matrix = POINTER TO ARRAY OF column; 
 
@@ -15,6 +26,7 @@ TYPE
   frmDesc* = RECORD
     height-, width-: INTEGER;
     mtrx*: matrix; 
+    columnNames*: POINTER TO ARRAY OF columnName;
     END;
 
 PROCEDURE create*(w, h: INTEGER): frm;
@@ -26,16 +38,19 @@ BEGIN
   f^.width := w; f^.height := h;
 
   NEW(f^.mtrx, h);
-  i:= 0;
+  i := 0;
   REPEAT
     NEW(f^.mtrx[i], w);
     Out.String("i="); Out.Int(i,0); Out.Ln;
     INC(i)
-  UNTIL i = h - 1;
+  UNTIL i = h;
+
+  NEW(f^.columnNames, w);
+
   RETURN f;
 END create;
 
-PROCEDURE write*(f: frm; cl: cell; c, r: INTEGER);
+PROCEDURE write*(f: frm; cl:cell; c, r: INTEGER);
 BEGIN
   f^.mtrx[c]^[r] := cl
 END write;
@@ -45,5 +60,9 @@ BEGIN
   RETURN f^.mtrx[c]^[r]
 END read;
 
-END frame.
+PROCEDURE nameColumn*(f: frm; i: INTEGER; name: ARRAY OF CHAR);
+BEGIN
+  f^.columnNames^[i] := name
+END nameColumn;
 
+END frame.
