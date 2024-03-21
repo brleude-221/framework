@@ -79,4 +79,29 @@ BEGIN
   UNTIL i = LEN(names);
 END nameColumns;
 
+PROCEDURE printDataFrame*(f: frm);
+VAR
+  c, r: INTEGER;
+  celll: cell;
+BEGIN
+  FOR r := 0 TO (f^.width - 1) DO
+    FOR c := 0 TO (f^.height - 1) DO
+      celll := read(f, c, r);
+      IF celll = NIL THEN
+        Out.String("NIL");
+      ELSE
+        IF celll IS strCell THEN
+          Out.String(celll(strCell)^.string);
+        ELSIF celll IS intCell THEN
+          Out.Int(celll(intCell)^.int, 0);
+        ELSE
+          Out.String("Unknown cell type");
+        END;
+      END;
+      Out.String(" ");
+    END;
+    Out.Ln;
+  END;
+END printDataFrame;
+
 END frame.

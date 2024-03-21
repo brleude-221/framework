@@ -14,6 +14,8 @@ BEGIN
   frame.write(f, icell, 0, 0);
   frame.write(f, scell, 1, 1);
   f^.mtrx[2]^[2] := f^.mtrx[1]^[1];
+  f^.mtrx[2]^[3] := f^.mtrx[1]^[1];
+  f^.mtrx[9]^[4] := f^.mtrx[1]^[1];
   IF f^.mtrx[2]^[2] IS frame.strCell THEN 
     Out.String(f^.mtrx[2]^[2](frame.strCell)^.string); Out.Ln;
   ELSE
@@ -31,7 +33,8 @@ BEGIN
   columnNames[3] := "o";
   columnNames[4] := "d";
   frame.nameColumns(f, columnNames);
-  Out.String(f^.columnNames^[2]); Out.Ln;
+
+  frame.printDataFrame(f); Out.Ln;
 
 END main;
 
