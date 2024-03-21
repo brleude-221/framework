@@ -6,6 +6,7 @@ VAR
   f:frame.frm;
   icell: frame.intCell;
   scell: frame.strCell;
+  columnNames: ARRAY 5 OF frame.columnName;
 BEGIN
   NEW(icell); NEW(scell);
   icell^.int := 2; scell^.string := "valod";
@@ -19,8 +20,18 @@ BEGIN
     Out.String("not a strCell"); Out.Ln;
   END;
 
+  (*
   frame.nameColumn(f, 0, "chgitem");
   Out.String(f^.columnNames^[0]); Out.Ln;
+  *)
+
+  columnNames[0] := "v";
+  columnNames[1] := "a";
+  columnNames[2] := "l";
+  columnNames[3] := "o";
+  columnNames[4] := "d";
+  frame.nameColumns(f, columnNames);
+  Out.String(f^.columnNames^[2]); Out.Ln;
 
 END main;
 

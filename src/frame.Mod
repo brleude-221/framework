@@ -18,7 +18,7 @@ TYPE
     int*: INTEGER
   END;
   
-  columnName = ARRAY 32 OF CHAR;
+  columnName* = ARRAY 32 OF CHAR;
   column = POINTER TO ARRAY OF cell; 
   matrix = POINTER TO ARRAY OF column; 
 
@@ -60,9 +60,23 @@ BEGIN
   RETURN f^.mtrx[c]^[r]
 END read;
 
+(*
 PROCEDURE nameColumn*(f: frm; i: INTEGER; name: ARRAY OF CHAR);
 BEGIN
   f^.columnNames^[i] := name
 END nameColumn;
+*)
+
+PROCEDURE nameColumns*(f: frm; names: ARRAY OF columnName);
+VAR
+  i: INTEGER;
+BEGIN
+  NEW(f^.columnNames, LEN(names));
+  i := 0;
+  REPEAT
+    f^.columnNames^[i] := names[i];
+    INC(i);
+  UNTIL i = LEN(names);
+END nameColumns;
 
 END frame.
