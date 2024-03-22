@@ -13,8 +13,9 @@ BEGIN
   f := frame.create(5, 10);
   frame.write(f, icell, 0, 0);
   frame.write(f, scell, 1, 1);
+  frame.write(f, icell, 7, 4);
   f^.mtrx[2]^[2] := f^.mtrx[1]^[1];
-  f^.mtrx[2]^[3] := f^.mtrx[1]^[1];
+  (*f^.mtrx[2]^[3] := f^.mtrx[1]^[1];*)
   f^.mtrx[9]^[4] := f^.mtrx[1]^[1];
   f^.mtrx[0]^[1] := f^.mtrx[1]^[1];
   IF f^.mtrx[2]^[2] IS frame.strCell THEN 
