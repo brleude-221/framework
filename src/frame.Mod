@@ -84,8 +84,9 @@ VAR
   c, r: INTEGER;
   celll: cell;
 BEGIN
-  FOR r := 0 TO (f^.width - 1) DO
-    FOR c := 0 TO (f^.height - 1) DO
+  FOR c := 0 TO (f^.height - 1) DO
+    FOR r := 0 TO (f^.width - 1) DO
+      (*Out.Int(c, 0);  Out.Int(r, 0); Out.Ln;*)
       celll := read(f, c, r);
       IF celll = NIL THEN
         Out.String("NIL");
