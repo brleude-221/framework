@@ -27,7 +27,9 @@ TYPE
     height-, width-: INTEGER;
     mtrx*: matrix; 
     columnNames*: cnames; 
+    loader*: PROCEDURE (filename: ARRAY OF CHAR);
     END;
+
 
 PROCEDURE create*(w, h: INTEGER): frm;
 VAR
@@ -43,9 +45,9 @@ BEGIN
     NEW(f^.mtrx[i], h);
     Out.String("i="); Out.Int(i,0); Out.Ln;
     INC(i)
-  UNTIL i = h;
+  UNTIL i = w;
 
-  NEW(f^.columnNames, w);
+  NEW(f^.columnNames, h);
 
   RETURN f;
 END create;
@@ -84,18 +86,17 @@ BEGIN
   REPEAT
     c := 0;
     REPEAT
-         Out.Int(c, 0); Out.Char(' ');  Out.Int(r, 0); Out.Ln;
       celll := read(f, c, r);
       IF celll = NIL THEN
-        Out.String("NIL"); Out.Ln;
+        Out.String("NIL"); 
       ELSIF celll IS strCell THEN
-        Out.String(celll(strCell)^.string); Out.Ln;
+        Out.String(celll(strCell)^.string); 
       ELSIF celll IS intCell THEN
-        Out.Int(celll(intCell)^.int, 0); Out.Ln;
+        Out.Int(celll(intCell)^.int, 0); 
       ELSE
-        Out.String("Unknown cell type"); Out.Ln;
+        Out.String("Unknown"); 
       END;
-      Out.String(" ");
+      Out.Char(' ');
       INC(c)
     UNTIL c = f^.width; 
     Out.Ln;
@@ -103,31 +104,5 @@ BEGIN
   UNTIL r = f^.height;
   Out.Ln;
 END printDataFrame2;
-
-PROCEDURE printDataFrame*(f: frm);
-VAR
-  c, r: INTEGER;
-  celll: cell;
-BEGIN
-  FOR c := 0 TO (f^.height - 1) DO
-    FOR r := 0 TO (f^.width - 1) DO
-      (*Out.Int(c, 0);  Out.Int(r, 0); Out.Ln;*)
-      celll := read(f, c, r);
-      IF celll = NIL THEN
-        Out.String("NIL");
-      ELSE
-        IF celll IS strCell THEN
-          Out.String(celll(strCell)^.string);
-        ELSIF celll IS intCell THEN
-          Out.Int(celll(intCell)^.int, 0);
-        ELSE
-          Out.String("Unknown cell type");
-        END;
-      END;
-      Out.String(" ");
-    END;
-    Out.Ln;
-  END;
-END printDataFrame;
 
 END frame.
