@@ -21,12 +21,12 @@ TYPE
   columnName* = ARRAY 32 OF CHAR;
   column = POINTER TO ARRAY OF cell; 
   matrix = POINTER TO ARRAY OF column; 
-
+  cnames* = POINTER TO ARRAY OF columnName;
   frm* = POINTER TO frmDesc;
   frmDesc* = RECORD
     height-, width-: INTEGER;
     mtrx*: matrix; 
-    columnNames*: POINTER TO ARRAY OF columnName;
+    columnNames*: cnames; 
     END;
 
 PROCEDURE create*(w, h: INTEGER): frm;
@@ -37,10 +37,10 @@ BEGIN
   NEW(f);
   f^.width := w; f^.height := h;
 
-  NEW(f^.mtrx, h);
+  NEW(f^.mtrx, w);
   i := 0;
   REPEAT
-    NEW(f^.mtrx[i], w);
+    NEW(f^.mtrx[i], h);
     Out.String("i="); Out.Int(i,0); Out.Ln;
     INC(i)
   UNTIL i = h;
@@ -67,17 +67,42 @@ BEGIN
 END nameColumn;
 *)
 
-PROCEDURE nameColumns*(f: frm; names: ARRAY OF columnName);
+PROCEDURE nameColumns*(f: frm; VAR names: cnames);
 VAR
   i: INTEGER;
 BEGIN
-  NEW(f^.columnNames, LEN(names));
-  i := 0;
-  REPEAT
-    f^.columnNames^[i] := names[i];
-    INC(i);
-  UNTIL i = LEN(names);
+  f^.columnNames := names;
 END nameColumns;
+
+PROCEDURE printDataFrame2*(f: frm);
+VAR
+  c, r: INTEGER;
+  celll: cell;
+BEGIN
+  Out.Int(f^.width, 0); Out.Char('x'); Out.Int(f^.height, 0); Out.Ln;
+  r := 0;
+  REPEAT
+    c := 0;
+    REPEAT
+         Out.Int(c, 0); Out.Char(' ');  Out.Int(r, 0); Out.Ln;
+      celll := read(f, c, r);
+      IF celll = NIL THEN
+        Out.String("NIL"); Out.Ln;
+      ELSIF celll IS strCell THEN
+        Out.String(celll(strCell)^.string); Out.Ln;
+      ELSIF celll IS intCell THEN
+        Out.Int(celll(intCell)^.int, 0); Out.Ln;
+      ELSE
+        Out.String("Unknown cell type"); Out.Ln;
+      END;
+      Out.String(" ");
+      INC(c)
+    UNTIL c = f^.width; 
+    Out.Ln;
+    INC(r);
+  UNTIL r = f^.height;
+  Out.Ln;
+END printDataFrame2;
 
 PROCEDURE printDataFrame*(f: frm);
 VAR
