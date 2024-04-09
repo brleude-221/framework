@@ -38,9 +38,9 @@ BEGIN
   columnNames[4] := "d";
   Out.String("naming"); Out.Ln;
   frame.nameColumns(f, columnNames);
-  frame.loader := readcsv.ReadCSVFile;
+  f^.loader := readcsv.ReadCSVFile;
 
-  frame.load(frame, "country_full.csv")
+  frame.load(f, "country_full.csv");
   (*frame.printDataFrame(f); Out.Ln;*)
   frame.printDataFrame2(f); Out.Ln;
 

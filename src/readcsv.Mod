@@ -1,4 +1,4 @@
-MODULE CSVReader;
+MODULE readcsv;
 
     IMPORT frame, Files, Out;
 
@@ -30,9 +30,6 @@ MODULE CSVReader;
         cellData[i] := 0X;
     END ReadCell;
 
-    PROCEDURE ReadLine();
-    END ReadLine;
-
     PROCEDURE ReadCSVFile*(fileName: ARRAY OF CHAR);
     VAR
         csvFile: Files.File;
@@ -44,4 +41,4 @@ MODULE CSVReader;
       Out.String(data); Out.Ln;
     END ReadCSVFile;
 
-END CSVReader.
+END readcsv.

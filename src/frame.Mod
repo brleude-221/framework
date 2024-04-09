@@ -105,4 +105,9 @@ BEGIN
   Out.Ln;
 END printDataFrame2;
 
+PROCEDURE load*(f: frm; filename: ARRAY OF CHAR);
+BEGIN
+    f^.loader(filename);
+END load;
+
 END frame.
