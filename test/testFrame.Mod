@@ -38,13 +38,13 @@ BEGIN
   columnNames[4] := "d";
   Out.String("naming"); Out.Ln;
   frame.nameColumns(f, columnNames);
-  (*
-    f^.loader := readcsv.ReadCSVFile;
-
-  frame.load(f, "country_full.csv");
-  *)
-  (*frame.printDataFrame(f); Out.Ln;*)
   frame.printDataFrame(f); Out.Ln;
+
+  (*f^.loader := readcsv.ReadCSVFile;*)
+  frame.setLoader(f, readcsv.ReadCSVFile);
+  f.load(f, "country_full.csv");
+
+
 
 END main;
 

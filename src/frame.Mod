@@ -18,18 +18,25 @@ TYPE
     int*: INTEGER
   END;
 
+
+
   columnName* = ARRAY 32 OF CHAR;
   cnames* = POINTER TO ARRAY OF columnName;
   column = POINTER TO ARRAY OF cell;
   matrix = POINTER TO ARRAY OF column;
   frm* = POINTER TO frmDesc;
+  Tloader* = PROCEDURE (f: frm; filename: ARRAY OF CHAR);
   frmDesc* = RECORD
     height-, width-: INTEGER;
     mtrx*: matrix;
     columnNames*: cnames;
-    loader*: PROCEDURE (filename: ARRAY OF CHAR);
+    load-: Tloader
     END;
 
+PROCEDURE setLoader*(f: frm; l: Tloader);
+BEGIN
+  f^.load := l
+END setLoader;
 
 PROCEDURE create*(w, h: INTEGER): frm;
 VAR
@@ -114,10 +121,5 @@ BEGIN
   UNTIL r = f^.height;
   Out.Ln;
 END printDataFrame;
-
-PROCEDURE load*(f: frm; filename: ARRAY OF CHAR);
-BEGIN
-    f^.loader(filename);
-END load;
 
 END frame.
