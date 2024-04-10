@@ -11,7 +11,7 @@ MODULE readcsv;
 
     PROCEDURE isEOL(ch: CHAR): BOOLEAN;
     BEGIN
-      IF (ch = CHR(13)) OR (ch = CHR(10)) THEN RETURN TRUE ELSE RETURN FALSE
+      IF (ch = CHR(13)) OR (ch = CHR(10)) THEN RETURN TRUE ELSE RETURN FALSE END
     END isEOL;
 
     PROCEDURE ReadCell(VAR cellData: ARRAY OF CHAR; VAR rider: Files.Rider);
@@ -38,18 +38,21 @@ MODULE readcsv;
     VAR
       eol, comma: BOOLEAN;
       ch: CHAR;
-      colCnt, rowCnt: INTEGER;
+      colCnt, rowCnt, commaCnt: INTEGER;
     BEGIN
-      colCnt := 0; rowCnt := 0;
+      commaCnt := 1; rowCnt := 0;
       eol := FALSE; ch := 0X;
       REPEAT
         Files.Read(R, ch);
         IF ch = ',' THEN
-          INC(colCnt)
-        ELSE
-
+          INC(commaCnt);
+        ELSIF isEOL(ch) THEN 
+          INC(rowCnt);
         END;
-      UNTIL eol;
+          colCnt := commaCnt DIV rowCnt + 1;
+      UNTIL R.eof;
+      Out.String("colCnt = "); Out.Int(colCnt, 0); Out.Ln;
+      Out.String("rowCnt = "); Out.Int(rowCnt, 0); Out.Ln;
     END discoverAndSetSize;
 
     PROCEDURE ReadCSVFile*(f: frame.frm; fileName: ARRAY OF CHAR);
