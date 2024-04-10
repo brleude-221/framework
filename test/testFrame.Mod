@@ -3,14 +3,15 @@ IMPORT Out, frame, readcsv;
 
 PROCEDURE main;
 VAR
-  f:frame.frm;
+  f, f1:frame.frm;
   icell: frame.intCell;
   scell: frame.strCell;
   columnNames: frame.cnames;
 BEGIN
   NEW(icell); NEW(scell);
   icell^.int := 2; scell^.string := "valod";
-  f := frame.create(5, 10);
+  f := frame.create();
+  frame.setSize(f, 5, 10);
   NEW(columnNames, f^.width);
   frame.write(f, icell, 0, 0);
   frame.write(f, icell, 1, 1);

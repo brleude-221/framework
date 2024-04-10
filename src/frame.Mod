@@ -38,14 +38,19 @@ BEGIN
   f^.load := l
 END setLoader;
 
-PROCEDURE create*(w, h: INTEGER): frm;
+PROCEDURE create*(): frm;
 VAR
   f: frm;
-  i: INTEGER;
 BEGIN
   NEW(f);
-  f^.width := w; f^.height := h;
+  RETURN f;
+END create;
 
+PROCEDURE setSize*(VAR f: frm; w, h: INTEGER);
+VAR
+  i: INTEGER;
+BEGIN
+  f^.width := w; f^.height := h;
   NEW(f^.mtrx, w);
   i := 0;
   REPEAT
@@ -53,11 +58,8 @@ BEGIN
     Out.String("i="); Out.Int(i,0); Out.Ln;
     INC(i)
   UNTIL i = w;
-
   NEW(f^.columnNames, h);
-
-  RETURN f;
-END create;
+END setSize;
 
 PROCEDURE write*(f: frm; cl:cell; c, r: INTEGER);
 BEGIN
