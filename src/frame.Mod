@@ -19,9 +19,9 @@ TYPE
   END;
 
   columnName* = ARRAY 32 OF CHAR;
+  cnames* = POINTER TO ARRAY OF columnName;
   column = POINTER TO ARRAY OF cell;
   matrix = POINTER TO ARRAY OF column;
-  cnames* = POINTER TO ARRAY OF columnName;
   frm* = POINTER TO frmDesc;
   frmDesc* = RECORD
     height-, width-: INTEGER;
@@ -82,6 +82,16 @@ VAR
   celll: cell;
 BEGIN
   Out.Int(f^.width, 0); Out.Char('x'); Out.Int(f^.height, 0); Out.Ln;
+  IF f^.columnNames # NIL THEN
+    r := 0;
+    REPEAT
+      Out.String(f^.columnNames^[r]); Out.Char(' ');;
+      INC(r)
+    UNTIL r = LEN(f^.columnNames^);
+    Out.Ln
+  ELSE
+    Out.String("column names are not set"); Out.Ln;
+  END;
   r := 0;
   REPEAT
     c := 0;
