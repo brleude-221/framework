@@ -10,12 +10,12 @@ TYPE
 
   strCell* = POINTER TO strCellDesc;
   strCellDesc* = RECORD(cellDesc)
-    string*: ARRAY 16 OF CHAR
+    string*: ARRAY 256 OF CHAR
   END;
 
   intCell* = POINTER TO intCellDesc;
   intCellDesc* = RECORD(cellDesc)
-    int*: INTEGER
+    int*: LONGINT
   END;
 
 

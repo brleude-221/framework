@@ -1,6 +1,6 @@
 MODULE readcsv;
 
-    IMPORT frame, Files, Out;
+    IMPORT frame, Files, Out, oocIntStr;
 
 
     PROCEDURE OpenCSVFile(fileName: ARRAY OF CHAR; VAR f: Files.File; VAR r: Files.Rider);
@@ -51,8 +51,7 @@ MODULE readcsv;
         END;
           colCnt := commaCnt DIV rowCnt + 1;
       UNTIL R.eof;
-      Out.String("colCnt = "); Out.Int(colCnt, 0); Out.Ln;
-      Out.String("rowCnt = "); Out.Int(rowCnt, 0); Out.Ln;
+      frame.setSize(f, colCnt, rowCnt)
     END discoverAndSetSize;
 
     PROCEDURE ReadCSVFile*(f: frame.frm; fileName: ARRAY OF CHAR);
@@ -60,15 +59,44 @@ MODULE readcsv;
         csvFile: Files.File;
         rider: Files.Rider;
         data: ARRAY 32 OF CHAR;
+        int: LONGINT;
+        icell: frame.intCell;
+        scell: frame.strCell;
+        fld, row: INTEGER;
+        res: SHORTINT;
     BEGIN
       OpenCSVFile(fileName, csvFile, rider);
       discoverAndSetSize(f, rider);
-        (*
+        row := 0;
+        REPEAT
+          fld := 0;
+          REPEAT 
+            ReadCell(data, rider);
+            oocIntStr.StrToInt(data, int, res);
+            IF res = oocIntStr.strAllRight THEN 
+              NEW(icell);
+              icell.int := int;
+              frame.write(f, icell, fld, row);
+              Out.String("Its int!!!!!"); Out.Ln;
+              Out.Int(int, 0); Out.Ln;
+            ELSE
+              NEW(scell);
+              COPY(data, scell.string); 
+              frame.write(f, scell, fld, row);
+              Out.String("Its string!!!"); Out.Ln;
+              Out.String(scell.string); Out.Ln;
+            END;
+            INC(fld);
+            Out.String("fld = "); Out.Int(fld, 0); Out.Ln;
+            Out.String("row = "); Out.Int(row, 0); Out.Ln;
+          UNTIL fld = f^.width - 1;
+        INC(row)
+          UNTIL row = f^.height - 1;
         ReadCell(data, rider);
+
         Out.Ln; Out.Ln;
         Out.String(data); Out.Ln;
         Out.Ln;
-        *)
  END ReadCSVFile;
 
 END readcsv.
