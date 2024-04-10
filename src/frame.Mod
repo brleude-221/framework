@@ -2,9 +2,9 @@ MODULE frame;
 
 IMPORT Out;
 
-TYPE 
+TYPE
   cell* = POINTER TO cellDesc;
-  cellDesc* = RECORD 
+  cellDesc* = RECORD
     (* abstract *)
     END;
 
@@ -17,16 +17,16 @@ TYPE
   intCellDesc* = RECORD(cellDesc)
     int*: INTEGER
   END;
-  
+
   columnName* = ARRAY 32 OF CHAR;
-  column = POINTER TO ARRAY OF cell; 
-  matrix = POINTER TO ARRAY OF column; 
+  column = POINTER TO ARRAY OF cell;
+  matrix = POINTER TO ARRAY OF column;
   cnames* = POINTER TO ARRAY OF columnName;
   frm* = POINTER TO frmDesc;
   frmDesc* = RECORD
     height-, width-: INTEGER;
-    mtrx*: matrix; 
-    columnNames*: cnames; 
+    mtrx*: matrix;
+    columnNames*: cnames;
     loader*: PROCEDURE (filename: ARRAY OF CHAR);
     END;
 
@@ -76,7 +76,7 @@ BEGIN
   f^.columnNames := names;
 END nameColumns;
 
-PROCEDURE printDataFrame2*(f: frm);
+PROCEDURE printDataFrame*(f: frm);
 VAR
   c, r: INTEGER;
   celll: cell;
@@ -88,22 +88,22 @@ BEGIN
     REPEAT
       celll := read(f, c, r);
       IF celll = NIL THEN
-        Out.String("NIL"); 
+        Out.String("NIL");
       ELSIF celll IS strCell THEN
-        Out.String(celll(strCell)^.string); 
+        Out.String(celll(strCell)^.string);
       ELSIF celll IS intCell THEN
-        Out.Int(celll(intCell)^.int, 0); 
+        Out.Int(celll(intCell)^.int, 0);
       ELSE
-        Out.String("Unknown"); 
+        Out.String("Unknown");
       END;
       Out.Char(' ');
       INC(c)
-    UNTIL c = f^.width; 
+    UNTIL c = f^.width;
     Out.Ln;
     INC(r);
   UNTIL r = f^.height;
   Out.Ln;
-END printDataFrame2;
+END printDataFrame;
 
 PROCEDURE load*(f: frm; filename: ARRAY OF CHAR);
 BEGIN

@@ -18,7 +18,7 @@ BEGIN
   f^.mtrx[2]^[2] := f^.mtrx[1]^[1];
   f^.mtrx[0]^[1] := f^.mtrx[1]^[1];
   Out.String("populated"); Out.Ln;
-  IF f^.mtrx[2]^[1] IS frame.strCell THEN 
+  IF f^.mtrx[2]^[1] IS frame.strCell THEN
     Out.String("It is"); Out.Ln;
     Out.String(f^.mtrx[2]^[1](frame.strCell)^.string); Out.Ln;
     Out.String("yes it is"); Out.Ln;
@@ -38,11 +38,13 @@ BEGIN
   columnNames[4] := "d";
   Out.String("naming"); Out.Ln;
   frame.nameColumns(f, columnNames);
-  f^.loader := readcsv.ReadCSVFile;
+  (*
+    f^.loader := readcsv.ReadCSVFile;
 
   frame.load(f, "country_full.csv");
+  *)
   (*frame.printDataFrame(f); Out.Ln;*)
-  frame.printDataFrame2(f); Out.Ln;
+  frame.printDataFrame(f); Out.Ln;
 
 END main;
 
