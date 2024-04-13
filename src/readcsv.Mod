@@ -47,9 +47,13 @@ MODULE readcsv;
         IF ch = ',' THEN
           INC(commaCnt);
         ELSIF isEOL(ch) THEN 
+          IF rowCnt = 0 THEN 
+            colCnt := commaCnt;
+          ELSIF colCnt # commaCnt THEN
+            ASSERT(TRUE);
+          END;
           INC(rowCnt);
         END;
-          colCnt := commaCnt DIV rowCnt + 1;
       UNTIL R.eof;
       frame.setSize(f, colCnt, rowCnt)
     END discoverAndSetSize;
