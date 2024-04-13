@@ -71,10 +71,14 @@ MODULE readcsv;
     BEGIN
       OpenCSVFile(fileName, csvFile, rider);
       discoverAndSetSize(f, rider);
+      Out.String("f^.width = "); Out.Int(f^.width, 0); Out.Ln;
+      Out.String("f^.height = "); Out.Int(f^.height, 0); Out.Ln;
         row := 0;
         REPEAT
           fld := 0;
-          REPEAT 
+          REPEAT
+            Out.String("fld = "); Out.Int(fld, 0); Out.Ln;
+            Out.String("row = "); Out.Int(row, 0); Out.Ln;
             ReadCell(data, rider);
             oocIntStr.StrToInt(data, int, res);
             IF res = oocIntStr.strAllRight THEN 
@@ -82,20 +86,18 @@ MODULE readcsv;
               icell.int := int;
               frame.write(f, icell, fld, row);
               Out.String("Its int!!!!!"); Out.Ln;
-              Out.Int(int, 0); Out.Ln;
+              Out.Int(int, 0); Out.Ln; Out. Ln;
             ELSE
               NEW(scell);
               COPY(data, scell.string); 
               frame.write(f, scell, fld, row);
               Out.String("Its string!!!"); Out.Ln;
-              Out.String(scell.string); Out.Ln;
+              Out.String(scell.string); Out.Ln; Out.Ln;
             END;
             INC(fld);
-            Out.String("fld = "); Out.Int(fld, 0); Out.Ln;
-            Out.String("row = "); Out.Int(row, 0); Out.Ln;
-          UNTIL fld = f^.width - 1;
+          UNTIL fld = f^.width;
         INC(row)
-          UNTIL row = f^.height - 1;
+          UNTIL row = f^.height;
         ReadCell(data, rider);
 
         Out.Ln; Out.Ln;
