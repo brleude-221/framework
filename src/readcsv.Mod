@@ -62,7 +62,7 @@ MODULE readcsv;
     VAR
         csvFile: Files.File;
         rider: Files.Rider;
-        data: ARRAY 32 OF CHAR;
+        data: ARRAY 64 OF CHAR;
         int: LONGINT;
         icell: frame.intCell;
         scell: frame.strCell;
