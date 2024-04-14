@@ -45,36 +45,6 @@ BEGIN
   frame.setLoader(f, readcsv.ReadCSVFile);
   f.load(f, "country_full.csv");
   frame.printDataFrame(f); Out.Ln;
-  
-  (*
-  f1 := frame.create();
-  frame.setSize(f1, 11, 250);
-  Out.String("after set size"); Out.Ln;
-
-  NEW(columnNames, f1^.width);
-  columnNames[0] := "v";
-  columnNames[1] := "a";
-  columnNames[2] := "l";
-  columnNames[3] := "o";
-  columnNames[4] := "d";
-  columnNames[5] := "6";
-  columnNames[6] := "7";
-  columnNames[7] := "8";
-  columnNames[8] := "9";
-  columnNames[9] := "1";
-  columnNames[10] := "2";
-
-  Out.String("naming"); Out.Ln;
-  frame.nameColumns(f1, columnNames);
-
-  frame.printDataFrame(f1); Out.Ln;
-  Out.String("before load"); Out.Ln;
-  frame.setLoader(f1, readcsv.ReadCSVFile);
-  f1.load(f1, "country_full.csv");
-  Out.String("after load"); Out.Ln;
-  Out.String("f^columnNames"); Out.Int(LEN(f1^.columnNames^), 0); Out.Ln;
-  frame.printDataFrame(f1); Out.Ln;
-  *)
 
 END main;
 

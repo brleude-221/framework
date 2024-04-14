@@ -91,20 +91,23 @@ VAR
   celll: cell;
 BEGIN
   Out.Int(f^.width, 0); Out.Char('x'); Out.Int(f^.height, 0); Out.Ln;
-  (*
   IF f^.columnNames # NIL THEN
-    Out.String("why are u here"); Out.Ln;
-    Out.Int(LEN(f^.columnNames^), 0); Out.Ln;
-    r := 0;
-    REPEAT
-      Out.String(f^.columnNames^[r]); Out.Char(' ');;
-      INC(r)
-    UNTIL r = LEN(f^.columnNames^);
-    Out.Ln
+    IF (LEN(f^.columnNames^) = f^.width) THEN
+      Out.String("why are u here"); Out.Ln;
+      Out.Int(LEN(f^.columnNames^), 0); Out.Ln;
+      r := 0;
+      REPEAT
+        Out.String(f^.columnNames^[r]); Out.Char(' ');;
+        INC(r)
+      UNTIL r = LEN(f^.columnNames^);
+      Out.Ln
+    ELSE
+      Out.String("length of column names doesn't match the number of columns"); Out.Ln;
+    END;
   ELSE
     Out.String("column names are not set"); Out.Ln;
   END;
-  *)
+
   r := 0;
   REPEAT
     c := 0;
