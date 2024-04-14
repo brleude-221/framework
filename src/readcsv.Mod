@@ -18,15 +18,19 @@ MODULE readcsv;
     VAR
         ch: CHAR;
         i: INTEGER;
-        b: BOOLEAN;
+        b, quoted: BOOLEAN;
     BEGIN
       i := 0;
       ch := 0X;
       b := FALSE;
+      quoted := FALSE;
       REPEAT
         Files.Read(rider, ch);
+        IF ch = '"' THEN 
+          quoted := ~quoted;
+        END;
         cellData[i] := ch;
-        b := ((ch = ",") OR isEOL(ch) OR rider.eof);
+        b := (~ quoted) & ((ch = ",") OR isEOL(ch) OR rider.eof);
         IF ~b THEN
           INC(i)
         END;
@@ -55,7 +59,7 @@ MODULE readcsv;
           INC(rowCnt);
         END;
       UNTIL R.eof;
-      frame.setSize(f, colCnt, rowCnt)
+      frame.setSize(f, colCnt, rowCnt + 1)
     END discoverAndSetSize;
 
     PROCEDURE ReadCSVFile*(f: frame.frm; fileName: ARRAY OF CHAR);
