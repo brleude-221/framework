@@ -29,7 +29,8 @@ TYPE
   frmDesc* = RECORD
     height-, width-: INTEGER;
     mtrx*: matrix;
-    columnNames*: cnames;
+    columnNames-: cnames;
+    hasColumnNames-: BOOLEAN;
     load-: Tloader
     END;
 
@@ -43,6 +44,8 @@ VAR
   f: frm;
 BEGIN
   NEW(f);
+  f^.width := 0; f^.height := 0;
+  f^.hasColumnNames := FALSE;
   RETURN f;
 END create;
 
@@ -51,6 +54,7 @@ VAR
   i: INTEGER;
 BEGIN
   f^.width := w; f^.height := h;
+  NEW(f^.columnNames, w);
   NEW(f^.mtrx, w);
   i := 0;
   REPEAT
@@ -58,8 +62,30 @@ BEGIN
     Out.String("i="); Out.Int(i,0); Out.Ln;
     INC(i)
   UNTIL i = w;
-  NEW(f^.columnNames, h);
 END setSize;
+
+PROCEDURE setColNames*(f: frm; names: cnames);
+BEGIN
+  IF f = NIL THEN
+    Out.String("frame is not initialized"); Out.Ln;
+    HALT(5)
+ END;
+
+ IF names # NIL THEN
+   f^.columnNames := names;
+   f^.hasColumnNames := TRUE
+ ELSE
+   Out.String("uninitialized array passed as column names"); Out.Ln;
+   HALT(6)
+ END;
+END setColNames;
+(*
+PROCEDURE nameColumn*(f: frm; i: INTEGER; name: ARRAY OF CHAR);
+BEGIN
+  f^.columnNames^[i] := name
+END nameColumn;
+*)
+
 
 PROCEDURE write*(f: frm; cl:cell; c, r: INTEGER);
 BEGIN
@@ -71,19 +97,22 @@ BEGIN
   RETURN f^.mtrx[c]^[r]
 END read;
 
-(*
-PROCEDURE nameColumn*(f: frm; i: INTEGER; name: ARRAY OF CHAR);
-BEGIN
-  f^.columnNames^[i] := name
-END nameColumn;
-*)
-
-PROCEDURE nameColumns*(f: frm; VAR names: cnames);
+PROCEDURE printColumnNames*(f: frm);
 VAR
-  i: INTEGER;
+  i : INTEGER;
 BEGIN
-  f^.columnNames := names;
-END nameColumns;
+  IF f^.hasColumnNames THEN
+    i := 0;
+    REPEAT
+      Out.String(f^.columnNames[i]); Out.Char(' ');
+      INC(i)
+    UNTIL i = LEN(f^.columnNames^);
+    Out.Ln;
+  ELSE
+    Out.String("column names are not set"); Out.Ln;
+    HALT(7)
+  END
+END printColumnNames;
 
 PROCEDURE printDataFrame*(f: frm);
 VAR
@@ -91,23 +120,15 @@ VAR
   celll: cell;
 BEGIN
   Out.Int(f^.width, 0); Out.Char('x'); Out.Int(f^.height, 0); Out.Ln;
-  IF f^.columnNames # NIL THEN
-    IF (LEN(f^.columnNames^) = f^.width) THEN
-      Out.String("why are u here"); Out.Ln;
-      Out.Int(LEN(f^.columnNames^), 0); Out.Ln;
+      printColumnNames(f);
+      (*
       r := 0;
       REPEAT
         Out.String(f^.columnNames^[r]); Out.Char(' ');;
         INC(r)
       UNTIL r = LEN(f^.columnNames^);
-      Out.Ln
-    ELSE
-      Out.String("length of column names doesn't match the number of columns"); Out.Ln;
-    END;
-  ELSE
-    Out.String("column names are not set"); Out.Ln;
-  END;
-
+      Out.Ln;
+      *)
   r := 0;
   REPEAT
     c := 0;

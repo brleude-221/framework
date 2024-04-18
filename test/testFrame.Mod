@@ -1,18 +1,18 @@
 MODULE testFrame;
-IMPORT Out, frame, readcsv;
+IMPORT Out, Strings, IntStr := oocIntStr, frame, readcsv;
 
 PROCEDURE main;
 VAR
   f, f1:frame.frm;
   icell: frame.intCell;
   scell: frame.strCell;
-  columnNames: frame.cnames;
+  columnNames: frame.cnames; strn: ARRAY 3 OF CHAR;
+  i: INTEGER;
 BEGIN
   NEW(icell); NEW(scell);
   icell^.int := 2; scell^.string := "valod";
   f := frame.create();
   frame.setSize(f, 5, 10);
-  NEW(columnNames, f^.width);
   frame.write(f, icell, 0, 0);
   frame.write(f, icell, 1, 1);
   frame.write(f, scell, 2, 1);
@@ -27,24 +27,34 @@ BEGIN
     Out.String("not a strCell"); Out.Ln;
   END;
 
+  NEW(columnNames, f^.width);
+  i := 0;
+  REPEAT
+    Out.String("sdkjfhjbwaie"); Out.Ln;
+    COPY("col ", columnNames[i]);
+    IntStr.IntToStr(i, strn);
+    Strings.Append (strn, columnNames[i]);
+    INC(i);
+  UNTIL i = LEN(f^.columnNames^);
+
+  frame.setColNames(f, columnNames);
   (*
   frame.nameColumn(f, 0, "chgitem");
   Out.String(f^.columnNames^[0]); Out.Ln;
   *)
 
-  columnNames[0] := "v";
-  columnNames[1] := "a";
-  columnNames[2] := "l";
-  columnNames[3] := "o";
-  columnNames[4] := "d";
+  
+
   Out.String("naming"); Out.Ln;
-  frame.nameColumns(f, columnNames);
   frame.printDataFrame(f); Out.Ln;
 
   (*f^.loader := readcsv.ReadCSVFile;*)
   frame.setLoader(f, readcsv.ReadCSVFile);
   f.load(f, "country_full.csv");
   frame.printDataFrame(f); Out.Ln;
+
+
+  
 
 END main;
 
