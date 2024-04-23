@@ -1,5 +1,5 @@
 MODULE testFrame;
-IMPORT Out, Strings, IntStr := oocIntStr, frame, readcsv;
+IMPORT Out, Strings, IntStr := oocIntStr, frame, readcsv, writecsv;
 
 PROCEDURE main;
 VAR
@@ -47,13 +47,15 @@ BEGIN
 
   Out.String("naming"); Out.Ln;
   frame.printDataFrame(f); Out.Ln;
-
+  
   (*f^.loader := readcsv.ReadCSVFile;*)
-  frame.setLoader(f, readcsv.ReadCSVFile);
-  f.load(f, "country_full.csv");
-  frame.printDataFrame(f); Out.Ln;
 
+  f1 := frame.create();
+  frame.setLoader(f1, readcsv.ReadCSVFile);
+  f1.load(f1, "country_full.csv");
+  frame.printDataFrame(f1); Out.Ln;
 
+  writecsv.saveDataFrameToCSV(f1, "testSave.csv"); 
   
 
 END main;

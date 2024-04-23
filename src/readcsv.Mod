@@ -1,6 +1,6 @@
 MODULE readcsv;
 
-    IMPORT frame, Files, Out, oocIntStr;
+    IMPORT frame, Files, Out, oocIntStr, SYSTEM;
 
 
     PROCEDURE OpenCSVFile(fileName: ARRAY OF CHAR; VAR f: Files.File; VAR r: Files.Rider);

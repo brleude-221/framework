@@ -46,6 +46,7 @@ build_deps:
 buildThis:
 	cd $(BUILD) && $(VOC) -s $(mkfile_dir_path)/src/frame.Mod
 	cd $(BUILD) && $(VOC) -s $(mkfile_dir_path)/src/readcsv.Mod
+	cd $(BUILD) && $(VOC) -s $(mkfile_dir_path)/src/writecsv.Mod
 
 tests:
 	cd $(BUILD) && $(VOC) $(mkfile_dir_path)/test/testFrame.Mod -m

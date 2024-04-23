@@ -120,7 +120,9 @@ VAR
   celll: cell;
 BEGIN
   Out.Int(f^.width, 0); Out.Char('x'); Out.Int(f^.height, 0); Out.Ln;
-      printColumnNames(f);
+      IF f^.hasColumnNames THEN
+        printColumnNames(f)
+      END;
       (*
       r := 0;
       REPEAT
