@@ -1,6 +1,6 @@
 MODULE writecsv;
 
-IMPORT Out, frame, Files, SYSTEM;
+IMPORT Out, frame, Files, SYSTEM, oocIntStr;
 
 PROCEDURE saveDataFrameToCSV*(f: frame.frm; filename: ARRAY OF CHAR);
 VAR
@@ -9,6 +9,7 @@ VAR
   c, r: LONGINT;
   celll: frame.cell;
   res: INTEGER;
+  strFromInt: ARRAY 256 OF CHAR;
 BEGIN
   file := Files.New(filename);
   IF file = NIL THEN
@@ -42,7 +43,9 @@ BEGIN
       ELSIF celll IS frame.intCell THEN
         (* why? *)
         Out.Int(celll(frame.intCell)^.int, 0); Out.Ln;
-        Files.WriteLInt(rider, celll(frame.intCell)^.int);
+        (*Files.WriteLInt(rider, celll(frame.intCell)^.int);*)
+        oocIntStr.IntToStr(celll(frame.intCell)^.int, strFromInt);
+        Files.WriteString(rider, strFromInt);
       ELSE
         Files.WriteString(rider, 'Unknown');
       END;
