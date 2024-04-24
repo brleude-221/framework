@@ -30,31 +30,31 @@ BEGIN
       END;
     END;
   END;
-(*
+
   FOR r := 0 TO f^.height - 1 DO
     FOR c := 0 TO f^.width - 1 DO
-      celll := frame.read(f, c, r);
+      celll := frame.read(f, SHORT(c), SHORT(r));
       IF celll = NIL THEN
         (* assuming this is wrong syntax below *)
-        Files.WriteString(file, '" "');
+        Files.WriteString(rider, '" "');
       ELSIF celll IS frame.strCell THEN
-        Files.WriteString(file, celll(frame.strCell)^.string);
+        Files.WriteString(rider, celll(frame.strCell)^.string);
       ELSIF celll IS frame.intCell THEN
         (* why? *)
-        SYSTEM.VAL(INTEGER, Files.WriteInt(file, celll(frame.intCell)^.int));
+        Files.WriteLInt(rider, celll(frame.intCell)^.int);
       ELSE
-        Files.WriteString(file, 'Unknown');
+        Files.WriteString(rider, 'Unknown');
       END;
       IF c < f^.width - 1 THEN
-        Files.WriteString(file, ', ');
+        Files.WriteString(rider, ', ');
       ELSE
-        Files.WriteLn(file);
+        Files.Write(rider, 0AX);
       END;
     END;
   END;
 
   Files.Close(file);
-  *)
+  
   Files.Register(file)
 END saveDataFrameToCSV;
 
