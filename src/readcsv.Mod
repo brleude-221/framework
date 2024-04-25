@@ -113,6 +113,7 @@ MODULE readcsv;
         frame.setColNames(f, cns);
             Out.String("exited setColNames"); Out.Ln;
       END;
+      Out.String("before discover size"); Out.Ln;
       discoverAndSetSize(f, rider);
       Out.String("f^.width = "); Out.Int(f^.width, 0); Out.Ln;
       Out.String("f^.height = "); Out.Int(f^.height, 0); Out.Ln;

@@ -54,7 +54,11 @@ VAR
   i: INTEGER;
 BEGIN
   f^.width := w; f^.height := h;
-  NEW(f^.columnNames, w);
+  Out.String("before new columnNames"); Out.Ln;
+  IF f^.columnNames = NIL THEN
+    NEW(f^.columnNames, w);
+  END;
+  Out.String("after new columnNames"); Out.Ln;
   NEW(f^.mtrx, w);
   i := 0;
   REPEAT
