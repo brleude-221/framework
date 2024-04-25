@@ -9,6 +9,7 @@ VAR
   columnNames: frame.cnames; strn: ARRAY 3 OF CHAR;
   i: INTEGER;
 BEGIN
+  (*
   NEW(icell); NEW(scell);
   icell^.int := 2; scell^.string := "valod";
   f := frame.create();
@@ -49,11 +50,17 @@ BEGIN
   frame.printDataFrame(f); Out.Ln;
   
   (*f^.loader := readcsv.ReadCSVFile;*)
-
+*)
   f1 := frame.create();
   frame.setLoader(f1, readcsv.ReadCSVFile);
-  f1.load(f1, "country_full.csv");
+  f1.load(f1, "country_full.csv", TRUE);
+  
+  Out.String("printing column names"); Out.Ln;
+  frame.printColumnNames(f1);
+  Out.String("-----------------"); Out.Ln;
+  Out.String("printing frame"); Out.Ln;
   frame.printDataFrame(f1); Out.Ln;
+  Out.String("-----------------"); Out.Ln;
 
   writecsv.saveDataFrameToCSV(f1, "testSave.csv"); 
   

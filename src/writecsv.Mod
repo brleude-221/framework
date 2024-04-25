@@ -42,7 +42,7 @@ BEGIN
         Files.WriteString(rider, celll(frame.strCell)^.string);
       ELSIF celll IS frame.intCell THEN
         (* why? *)
-        Out.Int(celll(frame.intCell)^.int, 0); Out.Ln;
+        (*Out.Int(celll(frame.intCell)^.int, 0); Out.Ln;*)
         (*Files.WriteLInt(rider, celll(frame.intCell)^.int);*)
         oocIntStr.IntToStr(celll(frame.intCell)^.int, strFromInt);
         Files.WriteString(rider, strFromInt);

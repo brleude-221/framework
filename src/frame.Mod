@@ -25,7 +25,7 @@ TYPE
   column = POINTER TO ARRAY OF cell;
   matrix = POINTER TO ARRAY OF column;
   frm* = POINTER TO frmDesc;
-  Tloader* = PROCEDURE (f: frm; filename: ARRAY OF CHAR);
+  Tloader* = PROCEDURE (f: frm; filename: ARRAY OF CHAR; hasColumns: BOOLEAN);
   frmDesc* = RECORD
     height-, width-: INTEGER;
     mtrx*: matrix;
@@ -59,19 +59,22 @@ BEGIN
   i := 0;
   REPEAT
     NEW(f^.mtrx[i], h);
-    Out.String("i="); Out.Int(i,0); Out.Ln;
+    (*Out.String("i="); Out.Int(i,0); Out.Ln;*)
     INC(i)
   UNTIL i = w;
 END setSize;
 
-PROCEDURE setColNames*(f: frm; names: cnames);
+PROCEDURE setColNames*(VAR f: frm; names: cnames);
 BEGIN
+   Out.String("entered setColNames"); Out.Ln;
+   Out.String("first name is "); Out.String(names^[0]); Out.Ln;
   IF f = NIL THEN
     Out.String("frame is not initialized"); Out.Ln;
     HALT(5)
  END;
 
  IF names # NIL THEN
+   Out.String("setting col names in frame"); Out.Ln;
    f^.columnNames := names;
    f^.hasColumnNames := TRUE
  ELSE

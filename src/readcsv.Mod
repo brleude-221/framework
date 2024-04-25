@@ -2,6 +2,7 @@ MODULE readcsv;
 
     IMPORT frame, Files, Out, oocIntStr, SYSTEM;
 
+    CONST cellLength = 64;
 
     PROCEDURE OpenCSVFile(fileName: ARRAY OF CHAR; VAR f: Files.File; VAR r: Files.Rider);
     BEGIN
@@ -14,7 +15,7 @@ MODULE readcsv;
       IF (ch = CHR(13)) OR (ch = CHR(10)) THEN RETURN TRUE ELSE RETURN FALSE END
     END isEOL;
 
-    PROCEDURE ReadCell(VAR cellData: ARRAY OF CHAR; VAR rider: Files.Rider);
+    PROCEDURE ReadCell(VAR cellData: ARRAY OF CHAR; VAR rider: Files.Rider; VAR eol: BOOLEAN);
     VAR
         ch: CHAR;
         i: INTEGER;
@@ -30,13 +31,31 @@ MODULE readcsv;
           quoted := ~quoted;
         END;
         cellData[i] := ch;
-        b := (~ quoted) & ((ch = ",") OR isEOL(ch) OR rider.eof);
+           (*  Out.String("i="); Out.Int(i, 0); Out.String(" ch="); Out.Char(ch); Out.Char(' '); *)
+        eol := isEOL(ch);
+            (* IF eol THEN Out.String("  EOL"); Out.Ln END; *)
+        b := ((~ quoted) & (ch = ",")) OR eol OR rider.eof;
         IF ~b THEN
           INC(i)
         END;
       UNTIL b;
       cellData[i] := 0X;
     END ReadCell;
+
+    PROCEDURE discoverWidth(r: Files.Rider): LONGINT;
+    VAR
+      count: INTEGER;
+      tmpStr: ARRAY cellLength OF CHAR;
+      eol: BOOLEAN;
+    BEGIN
+    count := 0;
+    REPEAT
+      ReadCell(tmpStr, r, eol);
+      INC(count)
+    UNTIL eol;
+
+    RETURN count
+    END discoverWidth;
 
     PROCEDURE discoverAndSetSize(f: frame.frm; R: Files.Rider);
     VAR
@@ -62,18 +81,38 @@ MODULE readcsv;
       frame.setSize(f, colCnt, rowCnt + 1)
     END discoverAndSetSize;
 
-    PROCEDURE ReadCSVFile*(f: frame.frm; fileName: ARRAY OF CHAR);
+    PROCEDURE ReadCSVFile*(f: frame.frm; fileName: ARRAY OF CHAR; hasColumnNames: BOOLEAN);
     VAR
         csvFile: Files.File;
         rider: Files.Rider;
-        data: ARRAY 64 OF CHAR;
+        data: ARRAY cellLength OF CHAR;
         int: LONGINT;
         icell: frame.intCell;
         scell: frame.strCell;
         fld, row: INTEGER;
         res: SHORTINT;
+        w: LONGINT;
+        cn: frame.columnName;
+        cns: frame.cnames;
+        i: LONGINT;
+        eol: BOOLEAN;
     BEGIN
       OpenCSVFile(fileName, csvFile, rider);
+      IF hasColumnNames THEN
+        w := discoverWidth(rider);
+        Out.String("discovered width = "); Out.Int(w, 0); Out.Ln;
+        NEW(cns, w);
+        i := 0;
+        REPEAT
+          ReadCell(cn, rider, eol);
+                 Out.String("read col name: '"); Out.String(cn); Out.Char("'"); Out.Ln;
+          COPY(cn, cns^[i]);
+          INC(i)
+        UNTIL i = w;
+            Out.String("calling setColNames"); Out.Ln;
+        frame.setColNames(f, cns);
+            Out.String("exited setColNames"); Out.Ln;
+      END;
       discoverAndSetSize(f, rider);
       Out.String("f^.width = "); Out.Int(f^.width, 0); Out.Ln;
       Out.String("f^.height = "); Out.Int(f^.height, 0); Out.Ln;
@@ -81,28 +120,28 @@ MODULE readcsv;
         REPEAT
           fld := 0;
           REPEAT
-            Out.String("fld = "); Out.Int(fld, 0); Out.Ln;
-            Out.String("row = "); Out.Int(row, 0); Out.Ln;
-            ReadCell(data, rider);
+            (*Out.String("fld = "); Out.Int(fld, 0); Out.Ln;
+            Out.String("row = "); Out.Int(row, 0); Out.Ln;*)
+            ReadCell(data, rider, eol);
             oocIntStr.StrToInt(data, int, res);
             IF res = oocIntStr.strAllRight THEN 
               NEW(icell);
               icell.int := int;
               frame.write(f, icell, fld, row);
-              Out.String("Its int!!!!!"); Out.Ln;
-              Out.Int(int, 0); Out.Ln; Out. Ln;
+              (*Out.String("Its int!!!!!"); Out.Ln;
+              Out.Int(int, 0); Out.Ln; Out. Ln;*)
             ELSE
               NEW(scell);
               COPY(data, scell.string); 
               frame.write(f, scell, fld, row);
-              Out.String("Its string!!!"); Out.Ln;
-              Out.String(scell.string); Out.Ln; Out.Ln;
+              (*Out.String("Its string!!!"); Out.Ln;
+              Out.String(scell.string); Out.Ln; Out.Ln;*)
             END;
             INC(fld);
           UNTIL fld = f^.width;
         INC(row)
           UNTIL row = f^.height;
-        ReadCell(data, rider);
+        ReadCell(data, rider, eol);
 
         Out.Ln; Out.Ln;
         Out.String(data); Out.Ln;
