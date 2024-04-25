@@ -54,11 +54,9 @@ VAR
   i: INTEGER;
 BEGIN
   f^.width := w; f^.height := h;
-  Out.String("before new columnNames"); Out.Ln;
   IF f^.columnNames = NIL THEN
     NEW(f^.columnNames, w);
   END;
-  Out.String("after new columnNames"); Out.Ln;
   NEW(f^.mtrx, w);
   i := 0;
   REPEAT
@@ -70,17 +68,13 @@ END setSize;
 
 PROCEDURE setColNames*(VAR f: frm; names: cnames);
 BEGIN
-   Out.String("entered setColNames"); Out.Ln;
-   Out.String("first name is "); Out.String(names^[0]); Out.Ln;
   IF f = NIL THEN
     Out.String("frame is not initialized"); Out.Ln;
     HALT(5)
  END;
 
  IF names # NIL THEN
-   Out.String("setting col names in frame"); Out.Ln;
    f^.columnNames := names;
-   Out.String("first name is "); Out.String(f^.columnNames^[0]); Out.Ln;
    f^.hasColumnNames := TRUE
  ELSE
    Out.String("uninitialized array passed as column names"); Out.Ln;
@@ -110,8 +104,6 @@ VAR
   i : INTEGER;
 BEGIN
   IF f^.hasColumnNames THEN
-    
-   Out.String("in print first name is "); Out.String(f^.columnNames^[0]); Out.Ln;
     i := 0;
     REPEAT
       Out.String(f^.columnNames[i]); Out.Char(' ');

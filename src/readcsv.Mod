@@ -100,20 +100,16 @@ MODULE readcsv;
       OpenCSVFile(fileName, csvFile, rider);
       IF hasColumnNames THEN
         w := discoverWidth(rider);
-        Out.String("discovered width = "); Out.Int(w, 0); Out.Ln;
+        (*Out.String("discovered width = "); Out.Int(w, 0); Out.Ln;*)
         NEW(cns, w);
         i := 0;
         REPEAT
           ReadCell(cn, rider, eol);
-                 Out.String("read col name: '"); Out.String(cn); Out.Char("'"); Out.Ln;
           COPY(cn, cns^[i]);
           INC(i)
         UNTIL i = w;
-            Out.String("calling setColNames"); Out.Ln;
         frame.setColNames(f, cns);
-            Out.String("exited setColNames"); Out.Ln;
       END;
-      Out.String("before discover size"); Out.Ln;
       discoverAndSetSize(f, rider);
       Out.String("f^.width = "); Out.Int(f^.width, 0); Out.Ln;
       Out.String("f^.height = "); Out.Int(f^.height, 0); Out.Ln;
