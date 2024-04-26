@@ -1,5 +1,5 @@
 MODULE testFrame;
-IMPORT Out, Strings, IntStr := oocIntStr, frame, readcsv, writecsv;
+IMPORT Out, Strings, IntStr := oocIntStr, frame, readcsv, writecsv, stats;
 
 PROCEDURE main;
 VAR
@@ -63,8 +63,9 @@ BEGIN
   Out.String("-----------------"); Out.Ln;
 
   writecsv.saveDataFrameToCSV(f1, "testSave.csv"); 
-  
 
+  stats.mean(f1, 3);
+  
 END main;
 
 
