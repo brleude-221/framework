@@ -151,42 +151,45 @@ PROCEDURE median*(f: frame.frm; c: INTEGER);
 CONST
     l = 512;
 VAR
-    intArr: ARRAY l OF LONGINT;
+    intArr: POINTER TO ARRAY OF LONGINT;
     celll: frame.cell;
     intCount: LONGINT;
     i: INTEGER;
     median: REAL;
 BEGIN
+    NEW(intArr, f^.height);
     intCount := 0;
     i := 0;
     REPEAT
       celll := frame.read(f, c, i);
       IF celll IS frame.intCell THEN
+        (*Out.String("i = "); Out.Int(i, 0); Out.Ln;*)
         intArr[intCount] := celll(frame.intCell)^.int;
         INC(intCount);
       END;
       INC(i);
-    UNTIL i = f^.height;
+    UNTIL i = f^.height - 1;
 
     IF intCount = 0 THEN
       Out.String("No integer values found"); Out.Ln;
       ELSE
-        IF intCount < f^.height  THEN
+        IF intCount < f^.height - 1 THEN
           Out.String("Attention! Non integer values are present in the column"); Out.Ln;
         END;
-        MergeSort(intArr, 0, intCount);
-        IF intCount MOD 2 = 1 THEN
-          median := intArr[intCount DIV 2 + 1];
+        MergeSort(intArr^, 0, intCount);
+        (*Out.String("int count = "); Out.Int(intCount, 0); Out.Ln;*)
+        IF (intCount + 1) MOD 2 = 1 THEN
+          median := intArr[(intCount + 1) DIV 2 + 1];
         ELSE
           median := (intArr[intCount DIV 2] + intArr[(intCount DIV 2) + 1]) / 2.0;
         END;
         
-      (*  
+      (* 
       i := 0;  
       REPEAT
         Out.Int(intArr[i], 0); Out.Ln;
         INC(i);
-      UNTIL i = LEN(intArr);
+      UNTIL i = LEN(intArr^);
       *)
 
       Out.String("median = "); Out.Real(median, 0); Out.Ln;
