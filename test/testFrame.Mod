@@ -67,7 +67,9 @@ BEGIN
 
   stats.mean(f1, 3);
   stats.colTypeCellCnt(f1, 3);
-  stats.medianMinMax(f1, 3);  
+  stats.medianMinMax(f1, 3); 
+  stats.mode(f1, 3);
+  stats.mode(f1, 9);
 END main;
 
 

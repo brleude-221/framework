@@ -195,5 +195,76 @@ BEGIN
     END;
 END medianMinMax;
 
+PROCEDURE mode*(f: frame.frm; c: INTEGER);
+VAR
+    intArr: POINTER TO ARRAY OF LONGINT;
+    celll: frame.cell;
+    intCount: LONGINT;
+    i: INTEGER;
+    median: REAL;
+    currentElement, maxElement, currentCount, maxCount: LONGINT;
+BEGIN
+    NEW(intArr, f^.height);
+    intCount := 0;
+    i := 0;
+    REPEAT
+      celll := frame.read(f, c, i);
+      IF celll IS frame.intCell THEN
+        (*Out.String("i = "); Out.Int(i, 0); Out.Ln;*)
+        intArr[intCount] := celll(frame.intCell)^.int;
+        INC(intCount);
+      END;
+      INC(i);
+    UNTIL i = f^.height - 1;
+
+    IF intCount = 0 THEN
+      Out.String("No integer values found"); Out.Ln;
+      ELSE
+        IF intCount < f^.height - 1 THEN
+          Out.String("Attention! Non integer values are present in the column"); Out.Ln;
+        END;
+        MergeSort(intArr^, 0, intCount);
+        (*Out.String("int count = "); Out.Int(intCount, 0); Out.Ln;*)
+
+        currentElement := intArr[0];
+        maxElement := intArr[0];
+        currentCount := 1;
+        maxCount := 1;        
+
+        i := 0;
+        REPEAT
+            IF intArr[i] = currentElement THEN
+              INC(currentCount);
+            ELSE
+              IF currentCount > maxCount THEN
+                maxElement := currentElement;
+                maxCount := currentCount;
+              END;
+        
+              currentElement := intArr[i];
+              currentCount := 1;
+            END;
+          INC(i);
+        UNTIL i = intCount + 1
+      (* 
+      i := 0;  
+      REPEAT
+        Out.Int(intArr[i], 0); Out.Ln;
+        INC(i);
+      UNTIL i = LEN(intArr^ + 1);
+      *)
+    END;
+
+    IF currentCount > maxCount THEN
+      maxElement := currentElement;
+      maxCount := currentCount;
+    END;
+
+    Out.String("Mode = "); Out.Int(maxElement, 0); Out.Ln;
+    Out.String("Frequency of mode = "); Out.Int(maxCount, 0); Out.Ln;
+
+END mode;
+
+
 END stats.
 
