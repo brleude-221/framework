@@ -45,6 +45,7 @@ build_deps:
 
 buildThis:
 	cd $(BUILD) && $(VOC) -s $(mkfile_dir_path)/src/frame.Mod
+	cd $(BUILD) && $(VOC) -s $(mkfile_dir_path)/src/MergeSort.Mod
 	cd $(BUILD) && $(VOC) -s $(mkfile_dir_path)/src/readcsv.Mod
 	cd $(BUILD) && $(VOC) -s $(mkfile_dir_path)/src/writecsv.Mod
 	cd $(BUILD) && $(VOC) -s $(mkfile_dir_path)/src/stats.Mod

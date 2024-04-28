@@ -75,5 +75,123 @@ BEGIN
 
 END mean;
 
+PROCEDURE Merge(VAR arr: ARRAY OF LONGINT; low, mid, high: LONGINT);
+VAR
+  i, j, k: LONGINT;
+  n1, n2: LONGINT;
+  left, right: POINTER TO ARRAY OF LONGINT;
+BEGIN
+  (* Determine sizes of two subarrays *)
+  n1 := mid - low + 1;
+  n2 := high - mid;
+
+  (* Create temporary arrays *)
+  NEW(left, n1);
+  NEW(right, n2);
+
+  (* Copy data to temporary arrays *)
+  FOR i := 0 TO n1 - 1 DO
+    left[i] := arr[low + i];
+  END;
+  FOR j := 0 TO n2 - 1 DO
+    right[j] := arr[mid + 1 + j];
+  END;
+
+  (* Merge the temporary arrays back into arr[low..high] *)
+  i := 0; (* Initial index of first subarray *)
+  j := 0; (* Initial index of second subarray *)
+  k := low; (* Initial index of merged subarray *)
+  WHILE (i < n1) & (j < n2) DO
+    IF left[i] <= right[j] THEN
+      arr[k] := left[i];
+      INC(i);
+    ELSE
+      arr[k] := right[j];
+      INC(j);
+    END;
+    INC(k);
+  END;
+
+  (* Copy remaining elements of left[] if any *)
+  WHILE i < n1 DO
+    arr[k] := left[i];
+    INC(i);
+    INC(k);
+  END;
+
+  (* Copy remaining elements of right[] if any *)
+  WHILE j < n2 DO
+    arr[k] := right[j];
+    INC(j);
+    INC(k);
+  END;
+
+  (* Free temporary arrays *)
+END Merge;
+
+(* Merge sort algorithm *)
+PROCEDURE MergeSort(VAR arr: ARRAY OF LONGINT; low, high: LONGINT);
+VAR
+  mid: LONGINT;
+BEGIN
+  IF low < high THEN
+    (* Find the middle point *)
+    mid := (low + high) DIV 2;
+
+    (* Sort first and second halves *)
+    MergeSort(arr, low, mid);
+    MergeSort(arr, mid + 1, high);
+
+    (* Merge the sorted halves *)
+    Merge(arr, low, mid, high);
+  END;
+END MergeSort;
+
+PROCEDURE median*(f: frame.frm; c: INTEGER);
+CONST
+    l = 512;
+VAR
+    intArr: ARRAY l OF LONGINT;
+    celll: frame.cell;
+    intCount: LONGINT;
+    i: INTEGER;
+    median: REAL;
+BEGIN
+    intCount := 0;
+    i := 0;
+    REPEAT
+      celll := frame.read(f, c, i);
+      IF celll IS frame.intCell THEN
+        intArr[intCount] := celll(frame.intCell)^.int;
+        INC(intCount);
+      END;
+      INC(i);
+    UNTIL i = f^.height;
+
+    IF intCount = 0 THEN
+      Out.String("No integer values found"); Out.Ln;
+      ELSE
+        IF intCount < f^.height  THEN
+          Out.String("Attention! Non integer values are present in the column"); Out.Ln;
+        END;
+        MergeSort(intArr, 0, intCount);
+        IF intCount MOD 2 = 1 THEN
+          median := intArr[intCount DIV 2 + 1];
+        ELSE
+          median := (intArr[intCount DIV 2] + intArr[(intCount DIV 2) + 1]) / 2.0;
+        END;
+        
+      (*  
+      i := 0;  
+      REPEAT
+        Out.Int(intArr[i], 0); Out.Ln;
+        INC(i);
+      UNTIL i = LEN(intArr);
+      *)
+
+      Out.String("median = "); Out.Real(median, 0); Out.Ln;
+    END;
+
+END median;
 END stats.
 

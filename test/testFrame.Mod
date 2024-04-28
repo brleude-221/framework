@@ -8,6 +8,7 @@ VAR
   scell: frame.strCell;
   columnNames: frame.cnames; strn: ARRAY 3 OF CHAR;
   i: INTEGER;
+
 BEGIN
   (*
   NEW(icell); NEW(scell);
@@ -66,7 +67,8 @@ BEGIN
 
   stats.mean(f1, 3);
   stats.colTypeCellCnt(f1, 3);
-  
+  stats.median(f1, 3);  
+  stats.median(f1, 8);
 END main;
 
 
