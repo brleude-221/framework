@@ -147,9 +147,7 @@ BEGIN
   END;
 END MergeSort;
 
-PROCEDURE median*(f: frame.frm; c: INTEGER);
-CONST
-    l = 512;
+PROCEDURE medianMinMax*(f: frame.frm; c: INTEGER);
 VAR
     intArr: POINTER TO ARRAY OF LONGINT;
     celll: frame.cell;
@@ -191,10 +189,11 @@ BEGIN
         INC(i);
       UNTIL i = LEN(intArr^);
       *)
-
+      Out.String("Minimum Value = "); Out.Int(intArr^[0], 0); Out.Ln;
+      Out.String("Maximum Value = "); Out.Int(intArr^[intCount], 0); Out.Ln;
       Out.String("median = "); Out.Real(median, 0); Out.Ln;
     END;
+END medianMinMax;
 
-END median;
 END stats.
 
