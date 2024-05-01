@@ -294,10 +294,14 @@ BEGIN
       intSum := intSum + celll(frame.intCell)^.int;
       intArr[intCount] := celll(frame.intCell)^.int;
       INC(intCount);
-    ELSIF celll IS frame.strCell THEN
-      INC(cntStr);
     ELSIF celll = NIL THEN
       INC(cntNil);
+    ELSIF celll IS frame.strCell THEN
+      IF celll(frame.strCell)^.string = '""' THEN
+        INC(cntNil);
+      ELSE
+        INC(cntStr);
+      END;
     END;
     INC(i);
   UNTIL i = f^.height;
