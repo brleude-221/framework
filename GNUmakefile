@@ -51,6 +51,7 @@ buildThis:
 
 tests:
 	cd $(BUILD) && $(VOC) $(mkfile_dir_path)/test/testFrame.Mod -m
+	cd $(BUILD) && $(VOC) $(mkfile_dir_path)/test/testStat.Mod -m
 	#build/testList
 
 clean:

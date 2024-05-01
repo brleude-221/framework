@@ -269,6 +269,105 @@ BEGIN
 
 END mode;
 
+PROCEDURE colStats*(f: frame.frm; c: INTEGER);
+VAR
+  celll: frame.cell;
+  i: INTEGER;
+  cntInt, cntStr, cntNil: INTEGER;
+  intSum, intCount: LONGINT;
+  intArr: POINTER TO ARRAY OF LONGINT;
+  median, mean: REAL;
+  currentElement, maxElement, currentCount, maxCount: LONGINT;
+  intSumReal: REAL;
+BEGIN
+  i := 0;
+  cntInt := 0; cntStr := 0; cntNil := 0;
+  intSum := 0; intCount := 0;
+  currentElement := 0; maxElement := 0; currentCount := 0; maxCount := 0;
+
+  NEW(intArr, f^.height);
+
+  REPEAT
+    celll := frame.read(f, c, i);
+    IF celll IS frame.intCell THEN
+      INC(cntInt);
+      intSum := intSum + celll(frame.intCell)^.int;
+      intArr[intCount] := celll(frame.intCell)^.int;
+      INC(intCount);
+    ELSIF celll IS frame.strCell THEN
+      INC(cntStr);
+    ELSIF celll = NIL THEN
+      INC(cntNil);
+    END;
+    INC(i);
+  UNTIL i = f^.height;
+
+  IF (cntStr # 0) & (cntInt # 0) THEN
+    Out.String("Attention! The column is not homogeneous"); Out.Ln;
+  ELSIF cntStr > 0 THEN
+    Out.String("Column type = string"); Out.Ln;
+  ELSIF cntInt > 0 THEN
+    Out.String("Column type = int"); Out.Ln;
+  ELSE
+    Out.String("The column is empty or has only NIL values"); Out.Ln;
+  END;
+
+  Out.String("Number of NIL = "); Out.Int(cntNil, 0); Out.Ln;
+  Out.String("Number of Integers = "); Out.Int(cntInt, 0); Out.Ln;
+  Out.String("Number of Strings = "); Out.Int(cntStr, 0); Out.Ln;
+
+  IF intCount = 0 THEN
+    Out.String("No integer values found"); Out.Ln;
+  ELSE
+    IF intCount < f^.height THEN
+      Out.String("Attention! Non-integer values are present in the column"); Out.Ln;
+    END;
+
+    MergeSort(intArr^, 0, intCount - 1);
+
+    IF (intCount MOD 2) = 1 THEN
+      median := intArr[intCount DIV 2];
+    ELSE
+      median := (intArr[intCount DIV 2] + intArr[(intCount DIV 2) - 1]) / 2.0;
+    END;
+
+    intSumReal := intSum;
+    mean := intSumReal / intCount;
+
+    Out.String("Sum = "); Out.Int(intSum, 0); Out.Ln;
+    Out.String("Mean = "); Out.Real(mean, 0); Out.Ln;
+    Out.String("Minimum Value = "); Out.Int(intArr^[0], 0); Out.Ln;
+    Out.String("Maximum Value = "); Out.Int(intArr^[intCount - 1], 0); Out.Ln;
+    Out.String("Median = "); Out.Real(median, 0); Out.Ln;
+
+    currentElement := intArr[0];
+    maxElement := intArr[0];
+
+    i := 0;
+        REPEAT
+            IF intArr[i] = currentElement THEN
+              INC(currentCount);
+            ELSE
+              IF currentCount > maxCount THEN
+                maxElement := currentElement;
+                maxCount := currentCount;
+              END;
+    
+              currentElement := intArr[i];
+              currentCount := 1;
+            END;
+          INC(i);
+        UNTIL i = intCount;
+
+    IF currentCount > maxCount THEN
+      maxElement := currentElement;
+      maxCount := currentCount;
+    END;
+
+    Out.String("Mode = "); Out.Int(maxElement, 0); Out.Ln;
+    Out.String("Frequency of mode = "); Out.Int(maxCount, 0); Out.Ln;
+  END;
+END colStats;
 
 END stats.
 
