@@ -16,7 +16,11 @@ BEGIN
   REPEAT
     celll := frame.read(f, c, i);
     IF celll IS frame.strCell THEN
-      INC(cntStr);
+      IF celll(frame.strCell)^.string = '""' THEN
+        INC(cntNil);
+      ELSE
+        INC(cntStr);
+      END;
     ELSIF celll IS frame.intCell THEN
       INC(cntInt);
     ELSIF celll = NIL THEN
