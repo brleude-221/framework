@@ -70,6 +70,7 @@ BEGIN
   stats.medianMinMax(f1, 3); 
   stats.mode(f1, 3);
   stats.mode(f1, 9);
+  stats.mode(f1, 8);
 END main;
 
 

@@ -228,8 +228,8 @@ BEGIN
 
         currentElement := intArr[0];
         maxElement := intArr[0];
-        currentCount := 1;
-        maxCount := 1;        
+        currentCount := 0;
+        maxCount := 0;        
 
         i := 0;
         REPEAT
@@ -258,6 +258,10 @@ BEGIN
     IF currentCount > maxCount THEN
       maxElement := currentElement;
       maxCount := currentCount;
+    END;
+
+    IF maxCount # 1 THEN
+      INC(maxCount)
     END;
 
     Out.String("Mode = "); Out.Int(maxElement, 0); Out.Ln;
