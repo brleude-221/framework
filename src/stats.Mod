@@ -377,5 +377,19 @@ BEGIN
   END;
 END colStats;
 
+
+PROCEDURE frmStats*(f: frame.frm);
+VAR
+  i: INTEGER;
+BEGIN
+  i := 0;
+  REPEAT
+    Out.String("Column"); Out.Int(i, 0); Out.Ln;
+    colStats(f, i);
+    Out.Ln;
+    INC(i);
+  UNTIL i = f^.width;
+END frmStats;
+
 END stats.
 
