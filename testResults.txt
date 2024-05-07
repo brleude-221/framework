@@ -1,0 +1,111 @@
+frame on country_full.csv
+./build/testStat  0.00s user 0.00s system 9% cpu 0.062 total
+./build/testStat  0.00s user 0.00s system 14% cpu 0.048 total
+./build/testStat  0.00s user 0.01s system 18% cpu 0.052 total
+./build/testStat  0.00s user 0.00s system 19% cpu 0.044 total
+./build/testStat  0.00s user 0.00s system 22% cpu 0.035 total
+./build/testStat  0.00s user 0.00s system 32% cpu 0.022 total
+./build/testStat  0.00s user 0.00s system 14% cpu 0.054 total
+./build/testStat  0.01s user 0.00s system 34% cpu 0.027 total
+./build/testStat  0.00s user 0.00s system 23% cpu 0.032 total
+./build/testStat  0.00s user 0.00s system 48% cpu 0.016 total
+
+python 3.11.7 pandas on country_full.csv
+python testStats.py  2.27s user 0.15s system 97% cpu 2.467 total
+python testStats.py  2.26s user 0.16s system 184% cpu 1.308 total
+python testStats.py  2.23s user 0.23s system 152% cpu 1.607 total
+python testStats.py  1.77s user 0.16s system 274% cpu 0.701 total
+python testStats.py  1.93s user 0.14s system 231% cpu 0.893 total
+python testStats.py  2.20s user 0.20s system 233% cpu 1.025 total
+python testStats.py  1.79s user 0.14s system 310% cpu 0.625 total
+python testStats.py  1.93s user 0.10s system 215% cpu 0.944 total
+python testStats.py  2.20s user 0.16s system 355% cpu 0.663 total
+python testStats.py  2.02s user 0.10s system 406% cpu 0.522 total
+
+python 3.11.7 csvkit on country_full.csv
+csvstat country_full.csv  0.07s user 0.05s system 55% cpu 0.220 total
+csvstat country_full.csv  0.07s user 0.05s system 48% cpu 0.253 total
+csvstat country_full.csv  0.08s user 0.04s system 76% cpu 0.155 total
+csvstat country_full.csv  0.09s user 0.04s system 89% cpu 0.135 total
+csvstat country_full.csv  0.08s user 0.04s system 89% cpu 0.137 total
+csvstat country_full.csv  0.08s user 0.03s system 97% cpu 0.118 total
+csvstat country_full.csv  0.08s user 0.04s system 87% cpu 0.136 total
+csvstat country_full.csv  0.09s user 0.04s system 80% cpu 0.154 total
+csvstat country_full.csv  0.08s user 0.04s system 66% cpu 0.177 total
+csvstat country_full.csv  0.08s user 0.05s system 58% cpu 0.212 total
+
+python 3.8.16 pandas on country_full.csv
+python3.8 testStats.py  1.79s user 0.11s system 564% cpu 0.337 total
+python3.8 testStats.py  1.59s user 0.09s system 577% cpu 0.291 total
+python3.8 testStats.py  1.70s user 0.06s system 555% cpu 0.317 total
+python3.8 testStats.py  1.53s user 0.17s system 583% cpu 0.293 total
+python3.8 testStats.py  1.53s user 0.20s system 620% cpu 0.279 total
+python3.8 testStats.py  1.46s user 0.26s system 622% cpu 0.276 total
+python3.8 testStats.py  1.49s user 0.08s system 618% cpu 0.255 total
+python3.8 testStats.py  1.72s user 0.13s system 589% cpu 0.315 total
+python3.8 testStats.py  1.50s user 0.06s system 617% cpu 0.252 total
+python3.8 testStats.py  1.65s user 0.06s system 617% cpu 0.276 total
+
+python 3.8.16 csvkit on country_full.csv
+csvstat country_full.csv  0.07s user 0.03s system 45% cpu 0.222 total
+csvstat country_full.csv  0.07s user 0.02s system 59% cpu 0.161 total
+csvstat country_full.csv  0.08s user 0.02s system 95% cpu 0.101 total
+csvstat country_full.csv  0.08s user 0.02s system 92% cpu 0.108 total
+csvstat country_full.csv  0.08s user 0.02s system 91% cpu 0.107 total
+csvstat country_full.csv  0.07s user 0.02s system 92% cpu 0.094 total
+csvstat country_full.csv  0.07s user 0.02s system 87% cpu 0.109 total
+csvstat country_full.csv  0.07s user 0.02s system 79% cpu 0.111 total
+csvstat country_full.csv  0.08s user 0.02s system 90% cpu 0.111 total
+csvstat country_full.csv  0.08s user 0.02s system 95% cpu 0.105 total
+
+frame on people-10000.csv
+./build/testStat  0.06s user 0.01s system 87% cpu 0.080 total
+./build/testStat  0.06s user 0.01s system 90% cpu 0.080 total
+./build/testStat  0.07s user 0.01s system 95% cpu 0.075 total
+./build/testStat  0.06s user 0.01s system 95% cpu 0.076 total
+./build/testStat  0.06s user 0.01s system 93% cpu 0.074 total
+./build/testStat  0.07s user 0.01s system 96% cpu 0.075 total
+./build/testStat  0.06s user 0.01s system 93% cpu 0.077 total
+./build/testStat  0.06s user 0.00s system 96% cpu 0.072 total
+./build/testStat  0.06s user 0.01s system 92% cpu 0.073 total
+./build/testStat  0.06s user 0.01s system 90% cpu 0.079 total
+
+python 3.11.7 pandas on people-10000.csv
+python testStats.py  2.22s user 0.16s system 213% cpu 1.113 total
+python testStats.py  2.14s user 0.15s system 289% cpu 0.790 total
+python testStats.py  2.02s user 0.14s system 442% cpu 0.488 total
+python testStats.py  1.95s user 0.18s system 561% cpu 0.380 total
+python testStats.py  2.02s user 0.12s system 418% cpu 0.513 total
+python testStats.py  1.90s user 0.14s system 504% cpu 0.404 total
+python testStats.py  1.80s user 0.30s system 532% cpu 0.396 total
+python testStats.py  2.11s user 0.22s system 394% cpu 0.590 total
+python testStats.py  1.98s user 0.10s system 550% cpu 0.379 total
+python testStats.py  2.36s user 0.17s system 310% cpu 0.814 total
+
+python 3.11.7 csvkit on people-10000.csv
+csvstat people-10000.csv  0.22s user 0.06s system 54% cpu 0.502 total
+csvstat people-10000.csv  0.21s user 0.05s system 62% cpu 0.424 total
+csvstat people-10000.csv  0.22s user 0.04s system 86% cpu 0.299 total
+csvstat people-10000.csv  0.22s user 0.04s system 98% cpu 0.265 total
+csvstat people-10000.csv  0.22s user 0.04s system 77% cpu 0.332 total
+csvstat people-10000.csv  0.21s user 0.06s system 62% cpu 0.434 total
+csvstat people-10000.csv  0.22s user 0.04s system 84% cpu 0.314 total
+csvstat people-10000.csv  0.23s user 0.04s system 92% cpu 0.286 total
+csvstat people-10000.csv  0.22s user 0.04s system 89% cpu 0.291 total
+csvstat people-10000.csv  0.22s user 0.04s system 90% cpu 0.288 total
+
+python 3.8.16 pandas on people-10000.csv
+python testStats.py  2.14s user 0.13s system 412% cpu 0.550 total
+python testStats.py  2.16s user 0.13s system 455% cpu 0.503 total
+python testStats.py  1.61s user 0.18s system 643% cpu 0.278 total
+python testStats.py  2.16s user 0.13s system 362% cpu 0.633 total
+python testStats.py  1.59s user 0.09s system 566% cpu 0.296 total
+python testStats.py  1.67s user 0.06s system 614% cpu 0.282 total
+python testStats.py  2.24s user 0.10s system 451% cpu 0.519 total
+python testStats.py  1.59s user 0.13s system 566% cpu 0.304 total
+python testStats.py  1.75s user 0.08s system 633% cpu 0.288 total
+python testStats.py  2.12s user 0.13s system 469% cpu 0.478 total
+
+python 3.8.16 csvkit on people-10000.csv
+csvstat did not work on this version for this file 
+ModuleNotFoundError: No module named '_lzma'

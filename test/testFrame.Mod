@@ -52,6 +52,9 @@ BEGIN
   
   (*f^.loader := readcsv.ReadCSVFile;*)
 *)
+
+(*loading the country full csv and printing*)
+
   f1 := frame.create();
   frame.setLoader(f1, readcsv.ReadCSVFile);
   f1.load(f1, "country_full.csv", TRUE);
@@ -64,6 +67,7 @@ BEGIN
   Out.String("-----------------"); Out.Ln;
 
   writecsv.saveDataFrameToCSV(f1, "testSave.csv"); 
+  (*saveDataFrameToXls.saveDataFrameToXls(f1, "testSave.Xls")*)
 
   stats.mean(f1, 3);
   stats.colTypeCellCnt(f1, 3);
@@ -71,6 +75,40 @@ BEGIN
   stats.mode(f1, 3);
   stats.mode(f1, 9);
   stats.mode(f1, 8);
+  stats.frmStats(f1);
+(*
+  NEW(icell); NEW(scell);
+  icell^.int := 0; scell^.string := "a";
+  f := frame.create();
+  frame.setSize(f, 3, 4);
+  frame.write(f, icell, 0, 0);
+  frame.write(f, scell, 1, 0);
+  NEW(icell); NEW(scell);
+  icell^.int := 1; scell^.string := "b";
+  frame.write(f, icell, 0, 1);
+  frame.write(f, scell, 1, 1);
+  NEW(icell); NEW(scell);
+  icell^.int := 2; scell^.string := "c";
+  frame.write(f, icell, 0, 2);
+  frame.write(f, scell, 1, 2);
+  NEW(icell); NEW(scell);
+  icell^.int := 3; scell^.string := "d";
+  frame.write(f, icell, 0, 3);
+  frame.write(f, scell, 1, 3);
+  
+  NEW(columnNames, f^.width);
+  i := 0;
+  REPEAT
+    COPY("", columnNames[i]);
+    IntStr.IntToStr(i, strn);
+    Strings.Append (strn, columnNames[i]);
+    INC(i);
+  UNTIL i = LEN(f^.columnNames^);
+
+  frame.setColNames(f, columnNames);
+
+  frame.printDataFrame(f); Out.Ln;
+  *)
 END main;
 
 
