@@ -1,13 +1,12 @@
-# Balancing Simplicity and Performance:
-
-# An Oberon-based Data Frame Tool
+# An Oberon-based Data Frame Tool:
+# Balancing Simplicity and Performance
  American University of Armenia
 
  Capstone Project submitted in fulfillment of the requirements for the degree of BS in Data Science
 
- Authhor: Irena Torosyan
+ Author: Irena Torosyan
 
- Supervisor: Norayr Chilingaryan
+ Supervisor: Norayr Chilingarian
 
  May 9, 2024
 
@@ -41,11 +40,11 @@ In the subsequent sections, we delve deeper into the technical details of the pr
 
 ## Related Work: A Landscape of Tabular Data Exploration Tools
 
-The desire to manipulate and analyze tabular data has a long history, with tools evolving to meet the needs of increasingly complex datasets and user demands. Visicalc, released in 1979, is considered a pioneer in this space. Its strength lay in its simplicity, allowing users to interact with spreadsheets through a user-friendly interface [1]. This simplicity and focus on ease-of-use serves as a core inspiration for the development of the Oberon-based data frame tool.
+The desire to manipulate and analyze tabular data has a long history, with tools evolving to meet the needs of increasingly complex datasets and user demands. [Visicalc](http://www.danbricklin.com/visicalc.htm), released in 1979, is considered a pioneer in this space. Its strength lay in its simplicity, allowing users to interact with spreadsheets through a user-friendly interface [1]. This simplicity and focus on ease-of-use serves as a core inspiration for the development of the Oberon-based data frame tool.
 
-Modern data science offers a rich ecosystem of tools for working with tabular data. Popular options include R's data.frame, Python's pandas library [2], and the csvkit suite [3]. These tools offer a variety of functionalities, from data cleaning and transformation to complex statistical analysis.
+Modern data science offers a rich ecosystem of tools for working with tabular data. Popular options include R's data.frame, Python's [pandas](https://pandas.pydata.org/) library [2], and the [csvkit](https://csvkit.readthedocs.io/en/latest/) suite [3]. These tools offer a variety of functionalities, from data cleaning and transformation to complex statistical analysis.
 
-**pandas**, perhaps the most widely used data analysis library in Python, excels in its flexibility and rich set of features. It allows for efficient data manipulation, advanced indexing, and powerful data cleaning capabilities. Pandas performs well when opposed to other popular tools for statistical data analysis and has been a very promising project since a decage ago. [4] However, pandas can be memory and time intensive for very large datasets, and its extensive functionality can come at the cost of a steeper learning curve.
+**pandas**, perhaps the most widely used data analysis library in Python, excels in its flexibility and rich set of features. It allows for efficient data manipulation, advanced indexing, and powerful data cleaning capabilities. Pandas performs well when opposed to other popular tools for statistical data analysis and has been a very promising project since a decade ago [4] [(McKinney, 2010)](http://conference.scipy.org.s3.amazonaws.com/proceedings/scipy2010/pdfs/mckinney.pdf). However, pandas can be memory and time intensive for very large datasets, and its extensive functionality can come at the cost of a steeper learning curve.
 
 **csvkit**, on the other hand, prioritizes speed and efficiency for working with CSV files. Its command-line interface offers a range of utilities for interacting with tabular data. While powerful for basic tasks, csvkit is implemented in a statically typed interpreted language which slows down its performance significantly. While the choice of python is justified in case of pandas, a simpler solution like csvkit, made to be used for simpler scenarios, can be implemented more efficiently without any loss of convenience. 
 
@@ -73,13 +72,15 @@ The `Frame` module supports two basic data types for cells: integers (`intCell`)
 
 * **Separate Data Loading Logic:** The `Frame` module provides a generic interface for data loading through the `Tloader` procedure type. This allows for implementing different data loader functions specific to various file formats (e.g., CSV, Excel) without modifying the core frame functionality. The `setLoader` procedure assigns a specific loader implementation to a `frame` instance.
 
-* **Object-Oriented Design Considerations:** One of the reasons why the implementation is passing the instance as an argument to a procedure is clarity. It makes the code clearer because it explicitly states which object the procedure is operating on. This can improve readability and maintainability. While this approach requires more typing, alternative solutions may cause noticable performance overhead due to virtual method tables (VMTs) [5]. Additionally, the compiler might be able to optimize the code better when it knows exactly which object the procedure is working on.
+* **Object-Oriented Design Considerations:** One of the reasons why the implementation is passing the instance as an argument to a procedure is clarity. It makes the code clearer because it explicitly states which object the procedure is operating on. This can improve readability and maintainability. While this approach requires more typing, alternative solutions may cause noticable performance overhead due to virtual method tables (VMTs) [5] [(Chapman, 2024)](https://chapmanworld.com/the-costs-and-benefits-of-interfaces/). Additionally, the compiler might be able to optimize the code better when it knows exactly which object the procedure is working on.
 
 **Future Enhancements:**
 
 The current implementation lays a solid foundation for future development. The design allows for:
 
 * **Extensible Data Types:** The use of an abstract base class (`cellDesc`) facilitates the addition of new data types (e.g., floating-point numbers, dates) without significant code modifications.
+
+![definition of `Frame`](img/def_frame.png)
 
 ## Loaders and Writers
 
@@ -123,7 +124,7 @@ The `stats` module provides functionalities for performing basic statistical ana
 
 * Currently, the module focuses on integer data types. Future enhancements could include support for additional data types.
 
-!["sample output of the statistical inference about select columns of `country_full.csv` ](img/stats_output.png)
+![sample output of the statistical inference about select columns of `country_full.csv` ](img/stats_output.png)
 
 ## Performance Analysis of Statistical Tools on Data Frames
 
@@ -138,7 +139,7 @@ The tests were conducted 10 times each and the mean system times were used for t
 
 * **frame stats outperforms both Pandas versions in all test cases.** It consistently achieved the fastest execution times. The average system time on `country_full.csv` is 154 times faster than pandas on python 3.11 and 122 times faster than pandas on python 3.8. The average system time on `people-10000.csv` is 18 times faster than pandas on python 3.11 and 13 times faster than pandas on python 3.8.
 * **csvkit is generally faster than Pandas but slower than frame stats** It exhibited reasonable performance on both datasets, except for the `people-10000.csv` with Python 3.8, where `csvkit` encountered an error and didn’t produce any results. The average system time on `country_full.csv` is 42 times faster than csvkit on python 3.11 and 75 times faster than csvkit on python 3.8. The average system time on `people-10000.csv` is 5 times faster than csvkit on python 3.11.
-* **Python version appears to have minimal impact.** There were no significant performance differences between Python 3.8 and 3.11 for either Pandas or csvkit. Nevertheless, an interesting fact may be observed with pandas performance. With regular core CPython improvements [6] and introduction of Just-in-Time (JIT) Compilation [7], it was expected to see a significant increase in efficiency, but in case of this particular usage of pandas, quite the opposite may be observed. Pandas does not directly utilize JIT, so while the possibility is there, no increase in efficiency is noticeable. While the difference is not extreme, a possible reason for a more efficient work of pandas on python 3.8 may be that pandas relies on underlying C libraries that have specific compatibility optimizations for Python 3.8.
+* **Python version appears to have minimal impact.** There were no significant performance differences between Python 3.8 and 3.11 for either Pandas or csvkit. Nevertheless, an interesting fact may be observed with pandas performance. With regular [core CPython improvements](https://docs.python.org/3/whatsnew/3.11.html]) [6] and introduction of [Just-in-Time (JIT) Compilation](https://numba.pydata.org/numba-doc/latest/index.html) [7], it was expected to see a significant increase in efficiency, but in case of this particular usage of pandas, quite the opposite may be observed. Pandas does not directly utilize JIT, so while the possibility is there, no increase in efficiency is noticeable. While the difference is not extreme, a possible reason for a more efficient work of pandas on python 3.8 may be that pandas relies on underlying C libraries that have specific compatibility optimizations for Python 3.8.
 
 **Reasons for Performance Differences:**
 
@@ -163,11 +164,14 @@ As the project grows and functionalities increase, maintaining a clean and effic
 
 * **CPU Usage:** While system times provide a good performance indicator, CPU usage details could offer further insights. 
 
-In the appendix the details of all testings are provided showing concrete details of each experiment. Frame stats used the least amount of cpu resources while performing the fastest in all tests.
+Frame stats used the least amount of cpu resources while performing the fastest in all tests. Adiitionally, we can notice that pandas used multiple threads. While this leads to potentially faster execution on large datasets,
+the Oberon-based tool achieves multiple times faster performance with a single thread. This is attributed to the efficiency of native code generation and the focus on core functionalities. The utilization of a single-threaded approach, prioritizing code simplicity and minimal resource overhead, is well justified based on the test results.  
+
+In the appendix the details of all testings are provided showing concrete details of each experiment. 
 
 ## Tool Usage and Accessibility
 
-The tool developed for this project leverages the Vishap Oberon compiler (voc) [8]. This compiler generates C code, enabling efficient execution on various platforms. 
+The tool developed for this project leverages the Vishap Oberon compiler ([voc](https://github.com/vishaps/voc)) [8]. This compiler generates C code, enabling efficient execution on various platforms. 
 
 **Current Implementation:**
 
@@ -202,7 +206,7 @@ Looking forward, this project presents a solid foundation for further developmen
 
 ## Resources
 
-[1] Bricklin, D. J., & Frankston, W. C. (n.d.). VisiCalc: Information from its creators, Dan Bricklin and Bob Frankston. http://www.danbricklin.com/visicalc.htm
+[1] {#references-1} Bricklin, D. J., & Frankston, W. C. (n.d.). VisiCalc: Information from its creators, Dan Bricklin and Bob Frankston. http://www.danbricklin.com/visicalc.htm
 
 [2] pandas: a python data analysis library. https://pandas.pydata.org/
 
